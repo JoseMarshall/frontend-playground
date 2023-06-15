@@ -7,8 +7,6 @@ import {
   ApolloProvider,
   ApolloLink,
   Observable,
-  Operation,
-  FetchResult,
 } from '@apollo/client';
 import { print, getOperationAST } from 'graphql';
 import { createClient } from 'graphql-sse';
