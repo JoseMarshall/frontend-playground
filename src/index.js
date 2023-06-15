@@ -65,7 +65,7 @@ const httpLink = createUploadLink({
 
 const sseLink = new SSELink({
   url: graphqlUri,
-
+  credentials: 'include',
   headers: () => {
     const session = {
       token: 'my-token',
