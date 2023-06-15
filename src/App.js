@@ -1,39 +1,19 @@
-// Import everything needed to use the `useQuery` hook
-import { useMutation, gql } from '@apollo/client';
+import { gql, useSubscription } from '@apollo/client';
 
-const UPLOAD_FILE = gql`mutation UPLOAD($file: File!){
-  upload(file: $file){
-    cid
-    id
-    type
-    url
-    updatedAt
-    createdAt
+const COUNT_SUB = gql`subscription COUNT_SUB($from: Int!){
+  countSub(from: $from){
+    count
   }
 }`;
 
 export default function App() {
-  const [uploadMutation, { data, loading, error }] = useMutation(UPLOAD_FILE, {
-    onCompleted: result => {
-      console.log('UPLOAD_FILE complete: ', result);
-    },
-    onError: error => {
-      console.error('useUploadFile error: ', error);
-      console.log('json error: ', JSON.stringify(error));
-    },
+  const { data, loading } = useSubscription(COUNT_SUB, {
+    variables: { from: 1 },
   });
-
   return (
     <div>
-      <h2>My first Apollo app 🚀</h2>
-      <input
-        type="file"
-        onChange={e => {
-          const file = e.target.files[0];
-          console.log('file: ', file);
-          uploadMutation({ variables: { file } });
-        }}
-      />
+      <h2>Counter</h2>
+      <h4>{!loading && data?.countSub?.count}</h4>
     </div>
   );
 }
